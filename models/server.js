@@ -14,6 +14,9 @@ class Server {
 
     // Rutas de aplicacion
     this.routes();
+
+    // configuracion de sockets
+    this.sockets();
   }
 
   middlewares() {
@@ -23,6 +26,15 @@ class Server {
     this.app.use(express.static("public"));
   }
   routes() {}
+
+  sockets() {
+    this.io.on("connection", (socket) => {
+      console.log("Cliente conectado", socket.id);
+      socket.on("disconnect", () => {
+        console.log("Cliente desconectado", socket.id);
+      });
+    });
+  }
 
   listen() {
     this.server.listen(this.port, () => {
